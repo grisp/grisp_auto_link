@@ -36,7 +36,7 @@ handle_event(enter, _OldState, done, _Data) ->
 handle_event(enter, _OldState, waiting_connection, _Data) ->
     {keep_state_and_data, [{state_timeout, 0, check}]};
 handle_event(state_timeout, check, waiting_connection, Data) ->
-    case grisp_io:is_connected() of
+    case grisp_connect:is_connected() of
         false ->
             {keep_state_and_data, [{state_timeout, ?STD_TIMEOUT, check}]};
         true ->
@@ -48,7 +48,7 @@ handle_event(enter, _OldState, pinging, _Data) ->
     {keep_state_and_data, [{state_timeout, 0, ping}]};
 handle_event(state_timeout, ping, pinging, Data) ->
     ?LOG_NOTICE(#{event => ping}),
-    case grisp_io:ping() of
+    case grisp_connect:ping() of
         {ok, <<"pong">>} ->
             ?LOG_NOTICE(#{event => pong, msg => "Device already linked"}),
             {next_state, done, Data};
@@ -64,7 +64,7 @@ handle_event(enter, _OldState, linking, _Data) ->
     ?LOG_NOTICE(#{event => linking, msg => "Trying to link the device..."}),
     {keep_state_and_data, [{state_timeout, 0, retry}]};
 handle_event(state_timeout, retry, linking, Data) ->
-    case grisp_io:link_device() of
+    case grisp_connect:link_device() of
         {ok, <<"ok">>} ->
             ?LOG_NOTICE(#{event => linked, msg => "Device linked!"}),
             {next_state, done, Data};
