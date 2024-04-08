@@ -1,0 +1,38 @@
+name: Deployment to S3
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        otp: ['25.3.2.8']
+        rebar3: ['3.22.1']
+    steps:
+    - uses: erlef/setup-beam@v1
+      with:
+        otp-version: ${{matrix.otp}}
+        rebar3-version: ${{matrix.rebar3}}
+    - uses: actions/checkout@v3
+    - name: Compile
+      run: |
+        rebar3 compile
+    - name: Deploy
+      run: |
+        rebar3 grisp deploy
+    - name: Zip
+      run: |
+        cd _deploy
+        zip ../grisp_auto_link.zip ./*
+    - uses: actions/upload-artifact@v3
+      with:
+        name: grisp_auto_link.zip
+        path: grisp_auto_link.zip
