@@ -31,8 +31,9 @@ jobs:
     - name: Zip
       run: |
         cd _deploy
-        zip ../grisp_auto_link.zip ./*
+        zip -r ../grisp_auto_link.zip ./*
     - uses: actions/upload-artifact@v3
       with:
         name: grisp_auto_link.zip
         path: grisp_auto_link.zip
+        compression-level: 0
