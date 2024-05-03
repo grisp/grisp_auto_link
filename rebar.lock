@@ -8,7 +8,7 @@
  {<<"grisp">>,{pkg,<<"grisp">>,<<"2.4.0">>},1},
  {<<"grisp_connect">>,
   {git,"https://github.com/grisp/grisp_connect",
-       {ref,"c002e7df9909f7fb8148063b2bbd8d837bd7ef67"}},
+       {ref,"f9f40f795763a61a20fee8b091a45a3c6ca0fce3"}},
   0},
  {<<"grisp_cryptoauth">>,{pkg,<<"grisp_cryptoauth">>,<<"2.1.0">>},1},
  {<<"gun">>,{pkg,<<"gun">>,<<"2.0.1">>},1},
